@@ -77,7 +77,6 @@ int main()
           		iss >> timestamp;
           		meas_package.timestamp_ = timestamp;
           } else if (sensor_type.compare("R") == 0) {
-
       	  		meas_package.sensor_type_ = MeasurementPackage::RADAR;
           		meas_package.raw_measurements_ = VectorXd(3);
           		float ro;
@@ -86,10 +85,11 @@ int main()
           		iss >> ro;
           		iss >> theta;
           		iss >> ro_dot;
-          		meas_package.raw_measurements_ << ro,theta, ro_dot;
+          		meas_package.raw_measurements_ << ro, theta, ro_dot;
           		iss >> timestamp;
           		meas_package.timestamp_ = timestamp;
           }
+
           float x_gt;
     	  float y_gt;
     	  float vx_gt;
@@ -115,14 +115,19 @@ int main()
     	  double p_x = fusionEKF.ekf_.x_(0);
     	  double p_y = fusionEKF.ekf_.x_(1);
     	  double v1  = fusionEKF.ekf_.x_(2);
-    	  double v2 = fusionEKF.ekf_.x_(3);
+    	  double v2  = fusionEKF.ekf_.x_(3);
+	  
+	  std::cout << "x " << p_x << endl;
+	  std::cout << "y " << p_y << endl;
+	  std::cout << "vx " << v1 << endl;
+	  std::cout << "vy " << v2 << endl;
 
     	  estimate(0) = p_x;
     	  estimate(1) = p_y;
     	  estimate(2) = v1;
     	  estimate(3) = v2;
     	  
-    	  estimations.push_back(estimate);
+    	  estimations.push_back(estimate);	  
 
     	  VectorXd RMSE = tools.CalculateRMSE(estimations, ground_truth);
 
@@ -183,90 +188,4 @@ int main()
   }
   h.run();
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
