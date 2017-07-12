@@ -70,7 +70,7 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
   }
   float t2 = px/sqrt(t1);
   float t3 = py/sqrt(t1);
-  float t4 = t2*t2*t2;
+  float t4 = t1*sqrt(t1);
     
   //compute the Jacobian matrix
   Hj << t2, t3, 0, 0,
