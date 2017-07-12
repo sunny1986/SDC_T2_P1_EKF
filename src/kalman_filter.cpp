@@ -30,7 +30,10 @@ void KalmanFilter::Predict() {
   */
 	x_ = F_ * x_;
 	MatrixXd Ft = F_.transpose();	
+//	cout << "predict P_ = " << endl;
+	cout << P_ << endl;
 	P_ = F_ * P_ * Ft + Q_;
+
 }
 
 void KalmanFilter::Update(const VectorXd &z) {
