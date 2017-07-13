@@ -32,7 +32,7 @@ int main()
 
   // Create a Kalman Filter instance
   FusionEKF fusionEKF;
-  std::cout << "xxxxxxxx " << endl;
+
   // used to compute the RMSE later
   Tools tools;
   vector<VectorXd> estimations;
