@@ -27,8 +27,7 @@ FusionEKF::FusionEKF() {
   R_radar_ = MatrixXd(3, 3);
   H_laser_ = MatrixXd(2, 4);
   Hj_ = MatrixXd(3, 4);
-  //F_ = MatrixXd(4,4);
-  //P_ = MatrixXd(4,4);
+  ekf_.P_ = MatrixXd(4,4);
 
   //measurement covariance matrix - laser
   R_laser_ << 0.0225, 0,
@@ -43,19 +42,11 @@ FusionEKF::FusionEKF() {
   H_laser_ << 1, 0, 0, 0,
 							0, 1, 0, 0;
 
-  // Initial transition matrix
-/*  F_ << 1, 0, 1, 0,
-        0, 1, 0, 1,
-				0, 0, 1, 0,
-				0, 0, 0, 1;
-
   // State covariance matrix
-  P_ << 1, 0, 0, 0,
+  ekf_.P_ << 1, 0, 0, 0,
         0, 1, 0, 0,
 				0, 0, 1000, 0,
 				0, 0, 0, 1000;
-*/
-	cout << "inside constructor " << endl;
 }
 
 /**
@@ -79,7 +70,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
     // first measurement
     cout << "EKF: " << endl;
     ekf_.x_ = VectorXd(4);
-    ekf_.x_ << 0.5, 0.5, 0.5, 0.5; // These values are important for RMSE
+    ekf_.x_ << 1, 1, 5, 5; // These values are important for RMSE
 
     if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
       /**
@@ -137,8 +128,6 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
 					  	0, 0, 1, 0,
 				  		0, 0, 0, 1;
 
-//	cout << "F" << ekf_.F_ << endl;
-
   //set the acceleration noise components
   float noise_ax = 9.0;
 	float	noise_ay = 9.0;
@@ -150,18 +139,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
 			   dt_3/2*noise_ax, 0, dt_2*noise_ax, 0,
 			   0, dt_3/2*noise_ay, 0, dt_2*noise_ay;
 
-//	cout << "Q" << ekf_.Q_ << endl;
-
-	ekf_.P_ = MatrixXd(4, 4);
-//	ekf_.P_ << 1, 0, 0, 0,
-//		0, 1, 0, 0,
-//		0, 0, 100, 0,
-//		0, 0, 0, 100;
-
-//	cout << "P" << ekf_.P_ << endl;
-
   ekf_.Predict();
-	cout << "Prediction done" << endl;
 
 
   /*****************************************************************************
@@ -203,5 +181,4 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   // print the output
   cout << "x_ = " << ekf_.x_ << endl;
   cout << "P_ = " << ekf_.P_ << endl;
-  cout << "******************************" << endl;
 }
