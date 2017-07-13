@@ -30,8 +30,6 @@ void KalmanFilter::Predict() {
   */
 	x_ = F_ * x_;
 	MatrixXd Ft = F_.transpose();	
-//	cout << "predict P_ = " << endl;
-	cout << P_ << endl;
 	P_ = F_ * P_ * Ft + Q_;
 
 }
@@ -74,6 +72,8 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
 	float t2 = px*vx + py*vy;
 	
 	float rho = sqrt(t1);
+
+	// Taking care of divide by 0 error
 	if(rho < 0.0001){
 		rho = 0.0001;	
 	}
